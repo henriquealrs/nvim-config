@@ -1,0 +1,2 @@
+require("hlustosa")
+print ("hello")
