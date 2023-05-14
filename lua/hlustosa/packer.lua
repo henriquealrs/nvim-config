@@ -30,10 +30,39 @@ return require('packer').startup(function(use)
 		  require('Comment').setup()
 	  end
   }
-  use('neovim/nvim-lspconfig') 
-  use('hrsh7th/cmp-nvim-lsp')
-  use('hrsh7th/cmp-buffer')
-  use('hrsh7th/cmp-path')
-  use('hrsh7th/cmp-cmdline')
-  use('hrsh7th/nvim-cmp')
+  -- use('neovim/nvim-lspconfig') 
+  -- use('hrsh7th/cmp-nvim-lsp')
+  -- use('hrsh7th/cmp-buffer')
+  -- use('hrsh7th/cmp-path')
+  -- use('hrsh7th/cmp-cmdline')
+  -- use('hrsh7th/nvim-cmp')
+  -- use('neoclide/coc.nvim', {branch = 'release'})
+  -- use {
+	 --  "williamboman/mason.nvim",
+	 --  run = ":MasonUpdate" -- :MasonUpdate updates registry contents
+  -- }
+
+  -- use('ycm-core/YouCompleteMe')
+  -- use('grailbio/bazel-compilation-database')
+
+
+use('williamboman/mason.nvim', { vim.cmd, 'MasonUpdate'})
+
+  use {
+	  'VonHeikemen/lsp-zero.nvim',
+	  branch = 'v2.x',
+	  requires = {
+		  -- LSP Support
+	  {'neovim/nvim-lspconfig'},             -- Required
+	  {'williamboman/mason-lspconfig.nvim'}, -- Optional
+	  -- Autocompletion
+	  {'hrsh7th/nvim-cmp'},     -- Required
+	  {'hrsh7th/cmp-nvim-lsp'}, -- Required
+	  {'L3MON4D3/LuaSnip'},     -- Required
+  }
+}
+
+
+
+-- use('ludovicchabant/vim-gutentags')
 end)
