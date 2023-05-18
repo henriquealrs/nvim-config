@@ -11,13 +11,13 @@ return require('packer').startup(function(use)
 	  -- or                            , branch = '0.1.x',
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
-  use({ 
-	  'rose-pine/neovim', 
-	  as = 'rose-pine',
-	  config = function()
-		  vim.cmd('colorscheme rose-pine')
-	  end
-  })
+  -- use({ 
+	 --  'rose-pine/neovim', 
+	 --  as = 'rose-pine',
+	 --  config = function()
+		--   vim.cmd('colorscheme rose-pine')
+	 --  end
+  -- })
 
   -- vim.cmd('colorscheme rose-pine')
   use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
@@ -30,23 +30,9 @@ return require('packer').startup(function(use)
 		  require('Comment').setup()
 	  end
   }
-  -- use('neovim/nvim-lspconfig') 
-  -- use('hrsh7th/cmp-nvim-lsp')
-  -- use('hrsh7th/cmp-buffer')
-  -- use('hrsh7th/cmp-path')
-  -- use('hrsh7th/cmp-cmdline')
-  -- use('hrsh7th/nvim-cmp')
-  -- use('neoclide/coc.nvim', {branch = 'release'})
-  -- use {
-	 --  "williamboman/mason.nvim",
-	 --  run = ":MasonUpdate" -- :MasonUpdate updates registry contents
-  -- }
-
-  -- use('ycm-core/YouCompleteMe')
-  -- use('grailbio/bazel-compilation-database')
 
 
-use('williamboman/mason.nvim', { vim.cmd, 'MasonUpdate'})
+  use('williamboman/mason.nvim', { vim.cmd, 'MasonUpdate'})
 
   use {
 	  'VonHeikemen/lsp-zero.nvim',
@@ -64,5 +50,5 @@ use('williamboman/mason.nvim', { vim.cmd, 'MasonUpdate'})
 
 
 
--- use('ludovicchabant/vim-gutentags')
+use('ludovicchabant/vim-gutentags')
 end)
