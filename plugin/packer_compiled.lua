@@ -110,6 +110,11 @@ _G.packer_plugins = {
     path = "/home/user/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["neotags.lua"] = {
+    loaded = true,
+    path = "/home/user/.local/share/nvim/site/pack/packer/start/neotags.lua",
+    url = "https://github.com/c0r73x/neotags.lua"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/home/user/.local/share/nvim/site/pack/packer/start/nvim-cmp",
