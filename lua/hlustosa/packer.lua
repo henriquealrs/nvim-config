@@ -18,13 +18,13 @@ return require('packer').startup(function(use)
   	}
   )
 
-  -- use({ 
-	 --  'rose-pine/neovim', 
-	 --  as = 'rose-pine',
-	 --  config = function()
-		--   vim.cmd('colorscheme rose-pine')
-	 --  end
-  -- })
+  use({ 
+	  'rose-pine/neovim', 
+	  as = 'rose-pine',
+	  config = function()
+		  vim.cmd('colorscheme rose-pine')
+	  end
+  })
 
   -- vim.cmd('colorscheme rose-pine')
   use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
@@ -57,5 +57,10 @@ return require('packer').startup(function(use)
   use {"akinsho/toggleterm.nvim", tag = '*', config = function()
 	  require("toggleterm").setup()
   end}
+
+  use {
+      requires = {"nvim-treesitter/nvim-treesitter"},
+      "Badhi/nvim-treesitter-cpp-tools",
+  }
 
 end)
