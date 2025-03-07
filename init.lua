@@ -1,3 +1,4 @@
-require("hlustosa")
+require("config")
+require("config.lazy")
 
-vim.cmd('colorscheme rose-pine')
+-- vim.cmd('colorscheme habamax')
