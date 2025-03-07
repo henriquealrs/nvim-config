@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv") 
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "J", "mzK`z")
@@ -14,4 +14,9 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 vim.keymap.set("n", "Q", "<nop>")
 
 vim.keymap.set("n", "<leader>ws", "<cmd>:split<cr>")
+
 vim.keymap.set("n", "<leader>wv", "<cmd>:vsplit<cr>")
+
+
+vim.api.nvim_set_keymap("n", "<leader>ct", [[:%s/\s\+$//e<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<leader>ct", [[:s/\s\+$//e<CR>]], { noremap = true, silent = true })

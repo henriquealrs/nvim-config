@@ -72,7 +72,7 @@ require("lazy").setup({
                         },
                         --[[
                 <your impl function custom command name> = {
-                    output_handle = function (str, context) 
+                    output_handle = function (str, context)
                         -- string contains the class implementation
                         -- do whatever you want to do with it
                     end
@@ -134,7 +134,6 @@ require("lazy").setup({
 
         -- LSP
 
-        { 'neovim/nvim-lspconfig' },
         { 'hrsh7th/cmp-nvim-lsp'  },
         { 'hrsh7th/cmp-buffer'    },
         { 'hrsh7th/cmp-path'      },
@@ -202,17 +201,40 @@ require("lazy").setup({
         {
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
-                config = function () 
+                config = function ()
                 local configs = require("nvim-treesitter.configs")
 
             configs.setup({
                 ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
                 sync_install = false,
                 highlight = { enable = true },
-                indent = { enable = true },  
+                indent = { enable = true },
             })
         end
     },
+
+        {
+            "numine777/py-bazel.nvim",
+            config = function()
+                require("py-bazel").setup({
+                    -- Path marker for directories that contain python libraries
+                    library_path_marker = nil,
+                    -- Path marker for pip dependencies within the external directory
+                    pip_deps_marker = nil,
+                    -- Path to location for the global pyright config. If not defined, local configs will be used
+                    global_pyright_config = nil,
+                    -- Root markers for Bazel build files
+                    lsp_root_markers = { "BUILD.bazel", "BUILD" },
+                    -- Root markers for monorepo workspace
+                    workspace_root_markers = { "WORKSPACE", "WORKSPACE.bazel" },
+                })
+            end,
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                "neovim/nvim-lspconfig",
+            },
+        },
+
     -- import your plugins
     { import = "plugins" },
   },
@@ -222,3 +244,4 @@ require("lazy").setup({
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
+

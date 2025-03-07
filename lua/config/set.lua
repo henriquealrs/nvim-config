@@ -24,3 +24,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.cmd(":highlight ExtraWhitespace ctermbg=red guibg=red")
+vim.cmd([[match ExtraWhitespace /\s\+$/]]) 
+
