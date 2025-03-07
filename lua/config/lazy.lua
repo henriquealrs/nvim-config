@@ -30,6 +30,7 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             lazy = false,
         },
+        {"tpope/vim-fugitive"},
         {
             "ThePrimeagen/harpoon",
             lazy = false,
@@ -53,7 +54,59 @@ require("lazy").setup({
             lazy = false,
             opts = {},
         },
+        {
+            "Badhi/nvim-treesitter-cpp-tools",
+            dependencies = { "nvim-treesitter/nvim-treesitter" },
+            -- Optional: Configuration
+            opts = function()
+                local options = {
+                    preview = {
+                        quit = "q", -- optional keymapping for quit preview
+                        accept = "<cr>", -- optional keymapping for accept preview
+                    },
+                    header_extension = "h", -- optional
+                    source_extension = "cpp", -- optional
+                    custom_define_class_function_commands = { -- optional
+                        TSCppImplWrite = {
+                            output_handle = require("nt-cpp-tools.output_handlers").get_add_to_cpp(),
+                        },
+                        --[[
+                <your impl function custom command name> = {
+                    output_handle = function (str, context) 
+                        -- string contains the class implementation
+                        -- do whatever you want to do with it
+                    end
+                }
+                ]]
+                    },
+                }
+                return options
+            end,
+            -- End configuration
+            config = true,
+        },
 
+        {"mbbill/undotree"},
+        {
+            "f-person/git-blame.nvim",
+            -- load the plugin at startup
+            event = "VeryLazy",
+            -- Because of the keys part, you will be lazy loading this plugin.
+            -- The plugin wil only load once one of the keys is used.
+            -- If you want to load the plugin at startup, add something like event = "VeryLazy",
+            -- or lazy = false. One of both options will work.
+            opts = {
+                -- your configuration comes here
+                -- for example
+                enabled = true,  -- if you want to enable the plugin
+                message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
+                date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+                virtual_text_column = 1,  -- virtual text start column, check Start virtual text at column section for more options
+            },
+
+        },
+        -- amongst your other plugins
+        {'akinsho/toggleterm.nvim', version = "*", config = true},
         -- Autocompletion
         {
             'hrsh7th/nvim-cmp',
@@ -80,14 +133,23 @@ require("lazy").setup({
         },
 
         -- LSP
+
+        { 'neovim/nvim-lspconfig' },
+        { 'hrsh7th/cmp-nvim-lsp'  },
+        { 'hrsh7th/cmp-buffer'    },
+        { 'hrsh7th/cmp-path'      },
+        { 'hrsh7th/cmp-cmdline'   },
+        { 'hrsh7th/nvim-cmp'      },
+        { 'hrsh7th/cmp-vsnip'     },
+        { 'hrsh7th/vim-vsnip'     },
+
+        {'williamboman/mason-lspconfig.nvim'},
         {
             'neovim/nvim-lspconfig',
+            lazy = false,
             cmd = {'LspInfo', 'LspInstall', 'LspStart'},
             event = {'BufReadPre', 'BufNewFile'},
             dependencies = {
-                {'hrsh7th/cmp-nvim-lsp'},
-                {'williamboman/mason.nvim'},
-                {'williamboman/mason-lspconfig.nvim'},
             },
             init = function()
                 -- Reserve a space in the gutter
