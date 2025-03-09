@@ -20,3 +20,7 @@ vim.keymap.set("n", "<leader>wv", "<cmd>:vsplit<cr>")
 
 vim.api.nvim_set_keymap("n", "<leader>ct", [[:%s/\s\+$//e<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>ct", [[:s/\s\+$//e<CR>]], { noremap = true, silent = true })
+
+vim.keymap.set("i", "<C-e>", "<Esc>ea")
+vim.keymap.set("i", "<C-b>", "<Esc>bi")
+vim.keymap.set("i", "<C-w>", "<Esc>wi")
