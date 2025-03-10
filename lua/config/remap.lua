@@ -20,3 +20,4 @@ vim.keymap.set("n", "<leader>wv", "<cmd>:vsplit<cr>")
 
 vim.api.nvim_set_keymap("n", "<leader>ct", [[:%s/\s\+$//e<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>ct", [[:s/\s\+$//e<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>hs", ":highlight ExtraWhitespace ctermbg=red guibg=red", {noremap = true, silent = true})
