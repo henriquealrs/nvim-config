@@ -1,4 +1,4 @@
 require("config")
 require("config.lazy")
 
--- vim.cmd('colorscheme habamax')
+vim.cmd.colorscheme("catppuccin-mocha")
