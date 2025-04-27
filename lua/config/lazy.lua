@@ -213,27 +213,27 @@ require("lazy").setup({
         end
     },
 
-        {
-            "numine777/py-bazel.nvim",
-            config = function()
-                require("py-bazel").setup({
-                    -- Path marker for directories that contain python libraries
-                    library_path_marker = nil,
-                    -- Path marker for pip dependencies within the external directory
-                    pip_deps_marker = nil,
-                    -- Path to location for the global pyright config. If not defined, local configs will be used
-                    global_pyright_config = nil,
-                    -- Root markers for Bazel build files
-                    lsp_root_markers = { "BUILD.bazel", "BUILD" },
-                    -- Root markers for monorepo workspace
-                    workspace_root_markers = { "WORKSPACE", "WORKSPACE.bazel" },
-                })
-            end,
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-                "neovim/nvim-lspconfig",
-            },
-        },
+        -- {
+        --     "numine777/py-bazel.nvim",
+        --     config = function()
+        --         require("py-bazel").setup({
+        --             -- Path marker for directories that contain python libraries
+        --             library_path_marker = nil,
+        --             -- Path marker for pip dependencies within the external directory
+        --             pip_deps_marker = nil,
+        --             -- Path to location for the global pyright config. If not defined, local configs will be used
+        --             global_pyright_config = nil,
+        --             -- Root markers for Bazel build files
+        --             lsp_root_markers = { "BUILD.bazel", "BUILD" },
+        --             -- Root markers for monorepo workspace
+        --             workspace_root_markers = { "WORKSPACE", "WORKSPACE.bazel" },
+        --         })
+        --     end,
+        --     dependencies = {
+        --         "nvim-lua/plenary.nvim",
+        --         "neovim/nvim-lspconfig",
+        --     },
+        -- },
 
     -- import your plugins
     { import = "plugins" },
