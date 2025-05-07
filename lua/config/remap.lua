@@ -1,6 +1,5 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>ft", ":Neotree toggle<CR>")
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -26,3 +25,5 @@ end
 vim.api.nvim_set_keymap("n", "<leader>ct", [[:%s/\s\+$//e<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<leader>ct", [[:s/\s\+$//e<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>hs", [[:highlight ExtraWhitespace ctermbg=red guibg=red<CR> <BAR>:match ExtraWhitespace /\s\+$/ <CR>]], {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('t', '<ESC>', [[<C-\><C-n>]], { noremap = true })

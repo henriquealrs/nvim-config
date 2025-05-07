@@ -44,12 +44,18 @@ require("lazy").setup({
         },
         {
             'nvim-telescope/telescope.nvim', tag = '0.1.8',
-            dependencies = { 'nvim-lua/plenary.nvim' }
+            dependencies = {
+                'nvim-lua/plenary.nvim',
+                {
+                    'nvim-telescope/telescope-fzf-native.nvim', build = 'make'
+                }
+            }
         },
         {
-            'williamboman/mason.nvim',
+            'mason-org/mason.nvim',
             lazy = false,
             opts = {},
+            version = "1.11.0"
         },
         {
             "Badhi/nvim-treesitter-cpp-tools",
@@ -139,7 +145,7 @@ require("lazy").setup({
         { 'hrsh7th/cmp-vsnip'     },
         { 'hrsh7th/vim-vsnip'     },
 
-        {'williamboman/mason-lspconfig.nvim'},
+        {'mason-org/mason-lspconfig.nvim', version = "1.32.0" },
         {
             'neovim/nvim-lspconfig',
             lazy = false,
