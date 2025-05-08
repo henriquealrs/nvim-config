@@ -21,3 +21,6 @@ vim.keymap.set('n', '<leader>ep', function()
         cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy")
     }
 end)
+
+require("config.telescope.multigrep").setup()
+require("config.telescope.wordgrep").setup()
