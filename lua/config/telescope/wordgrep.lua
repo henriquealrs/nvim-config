@@ -20,10 +20,11 @@ local live_wordgrep = function(opts)
                 table.insert(args, "-e")
                 table.insert(args, pieces[1])
             end
-            if pieces[2] then
-                table.insert(args, "--glob")
-                table.insert(args, pieces[2])
-            end
+            for i=2,table.getn(pieces),1
+                do
+                    table.insert(args, "--glob")
+                    table.insert(args, pieces[i])
+                end
             return vim.tbl_flatten{
                 args,
                 {
