@@ -20,7 +20,7 @@ local live_wordgrep = function(opts)
                 table.insert(args, "-e")
                 table.insert(args, pieces[1])
             end
-            for i=2,table.getn(pieces),1
+            for i=2,#pieces,1
                 do
                     table.insert(args, "--glob")
                     table.insert(args, pieces[i])
