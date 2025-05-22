@@ -5,6 +5,8 @@
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
+require("neodev").setup({})  -- must be called *before* lua_ls setup
+
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require('lspconfig').util.default_config
@@ -39,6 +41,29 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- These are example language servers. 
 require('lspconfig').gleam.setup({})
 require('lspconfig').ocamllsp.setup({})
+
+require('lspconfig').lua_ls.setup {
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT for Neovim)
+        version = "LuaJIT",
+      },
+      diagnostics = {
+        -- Recognize `vim` global
+        globals = { "vim" },
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,  -- disables telemetry notice
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
 
 local cmp = require'cmp'
 

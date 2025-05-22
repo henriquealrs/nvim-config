@@ -23,5 +23,5 @@ vim.api.nvim_set_keymap("n", "<leader>hs", [[:highlight ExtraWhitespace ctermbg=
 
 vim.api.nvim_set_keymap('t', '<ESC>', [[<C-\><C-n>]], { noremap = true })
 
-vim.keymap.set('n', '<C-n>', [[:cnext <CR>]], { noremap = true })
-vim.keymap.set('n', '<A-n>', [[:cprev <CR>]], { noremap = true })
+vim.keymap.set('n', '<A-j>', [[:cnext <CR>]], { noremap = true })
+vim.keymap.set('n', '<A-k>', [[:cprev <CR>]], { noremap = true })

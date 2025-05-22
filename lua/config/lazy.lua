@@ -190,7 +190,7 @@ require("lazy").setup({
                 })
 
                 require('mason-lspconfig').setup({
-                    ensure_installed = {},
+                    ensure_installed = {"c", "cpp", "lua_ls"},
                     handlers = {
                         -- this first function is the "default handler"
                         -- it applies to every language server without a "custom handler"
@@ -253,6 +253,12 @@ require("lazy").setup({
 
         {
             "yochem/jq-playground.nvim",
+        },
+        {
+            "folke/neodev.nvim",
+            config = function()
+                require("neodev").setup({})
+            end
         },
         -- import your plugins
         { import = "plugins" },
