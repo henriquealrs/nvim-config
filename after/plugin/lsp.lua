@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 -- These are example language servers. 
 require('lspconfig').gleam.setup({})
-require('lspconfig').ocamllsp.setup({})
+-- require('lspconfig').ocamllsp({}) -- ocamllsp.setup({})
 
 require('lspconfig').lua_ls.setup {
   settings = {
