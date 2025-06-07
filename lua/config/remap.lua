@@ -25,3 +25,18 @@ vim.api.nvim_set_keymap('t', '<ESC>', [[<C-\><C-n>]], { noremap = true })
 
 vim.keymap.set('n', '<A-j>', [[:cnext <CR>]], { noremap = true })
 vim.keymap.set('n', '<A-k>', [[:cprev <CR>]], { noremap = true })
+
+
+-- Debugging keys
+vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
+vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
+vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
+vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) end)
+
+
+-- DAP UI toggle
+vim.keymap.set('n', '<Leader>du', function()
+  require("dapui").toggle()
+end)
