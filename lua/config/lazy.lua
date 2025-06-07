@@ -195,7 +195,8 @@ require("lazy").setup({
                 })
 
                 require('mason-lspconfig').setup({
-                    ensure_installed = {"c", "cpp", "lua_ls"},
+                    ensure_installed = {"clangd", "lua_ls"},
+                    automatic_installation = true,
                     handlers = {
                         -- this first function is the "default handler"
                         -- it applies to every language server without a "custom handler"
