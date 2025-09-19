@@ -1,137 +1,71 @@
--- NOTE: to make any of this work you need a language server.
--- If you don't know what that is, watch this 5 min video:
--- https://www.youtube.com/watch?v=LaS32vctfOY
-
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
-require("neodev").setup({})  -- must be called *before* lua_ls setup
+-- Must run before Lua LS config/enable
+require("neodev").setup({})
 
--- Add cmp_nvim_lsp capabilities settings to lspconfig
--- This should be executed before you configure any language server
-local lspconfig_defaults = require('lspconfig').util.default_config
-lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-    'force',
-    lspconfig_defaults.capabilities,
-    require('cmp_nvim_lsp').default_capabilities()
-)
-
--- This is where you enable features that only work
--- if there is a language server active in the file
-vim.api.nvim_create_autocmd('LspAttach', {
-    desc = 'LSP actions',
-    callback = function(event)
-        local opts = {buffer = event.buf}
-
-        vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-        vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-        vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-        vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-        vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-        vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-        vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-    end,
+-- Add cmp_nvim_lsp capabilities to *all* LSPs
+vim.lsp.config('*', {
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
--- You'll find a list of language servers here:
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
--- These are example language servers. 
-require('lspconfig').gleam.setup({})
--- require('lspconfig').ocamllsp({}) -- ocamllsp.setup({})
+-- Keymaps & buffer-local tweaks when an LSP client attaches
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(event)
+    local opts = { buffer = event.buf }
+    vim.keymap.set('n', 'K',  vim.lsp.buf.hover,          opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition,     opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,    opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition,opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references,     opts)
+    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<F2>',  vim.lsp.buf.rename,      opts)
+    vim.keymap.set({'n','x'}, '<F3>', function() vim.lsp.buf.format({ async = true }) end, opts)
+    vim.keymap.set('n', '<F4>',  vim.lsp.buf.code_action, opts)
+  end,
+})
 
-require('lspconfig').lua_ls.setup {
+-- Server-specific settings (Lua LS shown as example)
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT for Neovim)
-        version = "LuaJIT",
-      },
-      diagnostics = {
-        -- Recognize `vim` global
-        globals = { "vim" },
-      },
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
       workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,  -- disables telemetry notice
+        library = vim.api.nvim_get_runtime_file('', true),
+        checkThirdParty = false,
       },
-      telemetry = {
-        enable = false,
-      },
+      telemetry = { enable = false },
     },
   },
-}
+})
 
+-- If you want ocamllsp later, add: vim.lsp.enable('ocamllsp')
+-- Enable the servers you use
+vim.lsp.enable({ 'gleam', 'lua_ls' })
 
+-- === nvim-cmp + LuaSnip ===
 local cmp = require('cmp')
 local luasnip = require('luasnip')
-
--- Optional: Load friendly-snippets (VSCode-style) if you're using them
 require("luasnip.loaders.from_vscode").lazy_load()
 
 cmp.setup({
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
-    },
-    window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    }, {
-        { name = 'buffer' },
-    }),
+  snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources(
+    { { name = 'nvim_lsp' }, { name = 'luasnip' } },
+    { { name = 'buffer' } }
+  ),
 })
-
-
--- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
--- Set configuration for specific filetype.
---[[ cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({
-      { name = 'git' },
-    }, {
-      { name = 'buffer' },
-    })
- })
- require("cmp_git").setup() ]]-- 
-
--- -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
--- cmp.setup.cmdline({ '/', '?' }, {
---     mapping = cmp.mapping.preset.cmdline(),
---     sources = {
---         { name = 'buffer' }
---     }
--- })
---
--- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
--- cmp.setup.cmdline(':', {
---     mapping = cmp.mapping.preset.cmdline(),
---     sources = cmp.config.sources({
---         { name = 'path' }
---     }, {
---             { name = 'cmdline' }
---         }),
---     matching = { disallow_symbol_nonprefix_matching = true }
--- })
---
--- -- Set up lspconfig.
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- require('lspconfig').clangd.setup {
---     capabilities = capabilities
--- }
-

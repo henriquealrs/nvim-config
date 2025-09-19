@@ -165,15 +165,10 @@ require("lazy").setup({
                 vim.opt.signcolumn = 'yes'
             end,
             config = function()
-                local lsp_defaults = require('lspconfig').util.default_config
-
-                -- Add cmp_nvim_lsp capabilities settings to lspconfig
-                -- This should be executed before you configure any language server
-                lsp_defaults.capabilities = vim.tbl_deep_extend(
-                    'force',
-                    lsp_defaults.capabilities,
-                    require('cmp_nvim_lsp').default_capabilities()
-                )
+                vim.lsp.config('*', {
+                    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                    -- on_attach = my_attach_function,  -- if you had one
+                })
 
                 -- LspAttach is where you enable features that only work
                 -- if there is a language server active in the file
@@ -202,7 +197,7 @@ require("lazy").setup({
                         -- this first function is the "default handler"
                         -- it applies to every language server without a "custom handler"
                         function(server_name)
-                            require('lspconfig')[server_name].setup({})
+                            vim.lsp.config(server_name, {})
                         end,
                     }
                 })
