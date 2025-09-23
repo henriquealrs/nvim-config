@@ -40,6 +40,8 @@ vim.lsp.config('gleam', { capabilities = capabilities })
 
 vim.lsp.config('pyright', {capabilities = capabilities})
 
+vim.lsp.enable({ 'lua_ls', 'clangd', 'gleam', 'pyright' })
+
 
 -- Auto-attach keymaps etc.
 vim.api.nvim_create_autocmd('LspAttach', {
