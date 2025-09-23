@@ -56,7 +56,6 @@ vim.lsp.config('gleam', { capabilities = capabilities })
 
 vim.lsp.config('pyright', {capabilities = capabilities})
 
-vim.lsp.enable({ 'lua_ls', 'clangd', 'gleam', 'pyright' })
 
 
 -- Auto-attach keymaps etc.
@@ -80,22 +79,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Finally, enable by server-name; this activates them for their filetypes
 -- vim.lsp.enable({ 'lua_ls', 'clangd', 'gleam', 'pyright' })
 
+vim.lsp.enable({ 'lua_ls', 'clangd', 'gleam', 'pyright' })
 
 local luasnip_loader_ok, luasnip_loader = pcall(require, 'luasnip.loaders.from_vscode')
 if luasnip_loader_ok then
   luasnip_loader.lazy_load()
-end
-
-if blink_ok then
-  blink.setup({
-    keymap = {
-      preset = 'default',
-      ['<C-b>'] = 'scroll_documentation_up',
-      ['<C-f>'] = 'scroll_documentation_down',
-      ['<C-Space>'] = 'show',
-      ['<C-e>'] = 'hide',
-      ['<CR>'] = 'accept',
-    },
-    snippets = { preset = 'luasnip' },
-  })
 end
