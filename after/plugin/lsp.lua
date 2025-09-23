@@ -3,8 +3,13 @@
 -- https://www.youtube.com/watch?v=LaS32vctfOY
 require('mason').setup()
 
--- Add this line near the top (before vim.lsp.config calls):
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local blink_ok, blink = pcall(require, 'blink.cmp')
+
+-- Generate client capabilities, augmenting them with blink.cmp if available.
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+if blink_ok and blink.get_lsp_capabilities then
+  capabilities = blink.get_lsp_capabilities(capabilities)
+end
 capabilities.offsetEncoding = { "utf-16" }
 
 require('mason-lspconfig').setup({
@@ -72,36 +77,25 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<F4>', vim.lsp.buf.code_action, opts)
     end,
 })
-
-
 -- Finally, enable by server-name; this activates them for their filetypes
 -- vim.lsp.enable({ 'lua_ls', 'clangd', 'gleam', 'pyright' })
 
 
-local cmp = require('cmp')
-local luasnip = require('luasnip')
-require("luasnip.loaders.from_vscode").lazy_load()
+local luasnip_loader_ok, luasnip_loader = pcall(require, 'luasnip.loaders.from_vscode')
+if luasnip_loader_ok then
+  luasnip_loader.lazy_load()
+end
 
-cmp.setup({
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
+if blink_ok then
+  blink.setup({
+    keymap = {
+      preset = 'default',
+      ['<C-b>'] = { 'scroll_documentation', -4 },
+      ['<C-f>'] = { 'scroll_documentation', 4 },
+      ['<C-Space>'] = { 'show' },
+      ['<C-e>'] = { 'hide' },
+      ['<CR>'] = { 'accept', 'fallback' },
     },
-    window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        -- { name = 'luasnip' },
-        -- { name = 'buffer' },
-    })
-})
+    snippets = { preset = 'luasnip' },
+  })
+end
