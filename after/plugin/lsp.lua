@@ -10,7 +10,10 @@ require('mason-lspconfig').setup({
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
-require("neodev").setup({})
+local neodev_ok, neodev = pcall(require, "neodev")
+if neodev_ok then
+  neodev.setup({})
+end
 
 -- Add this line near the top (before vim.lsp.config calls):
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
