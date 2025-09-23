@@ -2,19 +2,27 @@
 -- If you don't know what that is, watch this 5 min video:
 -- https://www.youtube.com/watch?v=LaS32vctfOY
 require('mason').setup()
+
+-- Add this line near the top (before vim.lsp.config calls):
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.offsetEncoding = { "utf-16" }
+
 require('mason-lspconfig').setup({
   ensure_installed = { 'lua_ls', 'clangd', 'pyright' },
-  automatic_enable = true,
+  automatic_installation = true,
+  handlers = {
+    function(server)
+      vim.lsp.config(server, {
+        capabilities = capabilities,
+      })
+    end,
+  },
 })
 
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
 require("neodev").setup({})
-
--- Add this line near the top (before vim.lsp.config calls):
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities.offsetEncoding = { "utf-16" }
 
 -- Define/override server configs (data only)
 vim.lsp.config('lua_ls', {
