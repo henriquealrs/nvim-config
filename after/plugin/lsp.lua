@@ -90,11 +90,11 @@ if blink_ok then
   blink.setup({
     keymap = {
       preset = 'default',
-      ['<C-b>'] = { 'scroll_documentation', -4 },
-      ['<C-f>'] = { 'scroll_documentation', 4 },
-      ['<C-Space>'] = { 'show' },
-      ['<C-e>'] = { 'hide' },
-      ['<CR>'] = { 'accept', 'fallback' },
+      ['<C-b>'] = 'scroll_documentation_up',
+      ['<C-f>'] = 'scroll_documentation_down',
+      ['<C-Space>'] = 'show',
+      ['<C-e>'] = 'hide',
+      ['<CR>'] = 'accept',
     },
     snippets = { preset = 'luasnip' },
   })
