@@ -105,25 +105,7 @@ require("lazy").setup({
         },
         -- amongst your other plugins
         { 'akinsho/toggleterm.nvim',        version = "*",     config = true },
-        -- Autocompletion
-        {
-            'hrsh7th/nvim-cmp',
-            event = 'InsertEnter',
-            dependencies = {
-                'hrsh7th/cmp-nvim-lsp',
-                'L3MON4D3/LuaSnip',
-                'saadparwaiz1/cmp_luasnip',
-                'rafamadriz/friendly-snippets',
-            },
-        },
-
-
         -- LSP
-
-        -- { 'hrsh7th/cmp-buffer' },
-        -- { 'hrsh7th/cmp-path' },
-        -- { 'hrsh7th/cmp-cmdline' },
-
         {
             'mason-org/mason.nvim',
             lazy = false,

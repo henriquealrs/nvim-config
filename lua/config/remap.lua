@@ -26,6 +26,9 @@ vim.api.nvim_set_keymap('t', '<ESC>', [[<C-\><C-n>]], { noremap = true })
 vim.keymap.set('n', '<A-j>', [[:cnext <CR>]], { noremap = true })
 vim.keymap.set('n', '<A-k>', [[:cprev <CR>]], { noremap = true })
 
+vim.keymap.set("n", "<leader>di", function()
+    vim.diagnostic.open_float(nil, { focus=false, scope="cursor"})
+end)
 
 -- Debugging keys
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
