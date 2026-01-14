@@ -55,6 +55,9 @@ require("lazy").setup({
         {
             "Badhi/nvim-treesitter-cpp-tools",
             dependencies = { "nvim-treesitter/nvim-treesitter" },
+            cond = function()
+                return pcall(require, "nvim-treesitter.ts_utils")
+            end,
             -- Optional: Configuration
             opts = function()
                 local options = {
@@ -130,9 +133,15 @@ require("lazy").setup({
         },
         {
             "nvim-treesitter/nvim-treesitter",
+            branch = "master",
+            lazy = false,
             build = ":TSUpdate",
             config = function()
-                local configs = require("nvim-treesitter.configs")
+                local ok, configs = pcall(require, "nvim-treesitter.configs")
+                if not ok then
+                    vim.notify("nvim-treesitter not available; skipping treesitter setup", vim.log.levels.WARN)
+                    return
+                end
 
                 configs.setup({
                     ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
@@ -205,7 +214,7 @@ require("lazy").setup({
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.
-    install = { colorscheme = { "rose-pine" } },
+    install = { missing = true, colorscheme = { "rose-pine" } },
     -- automatically check for plugin updates
     checker = { enabled = true },
 })
