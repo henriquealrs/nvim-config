@@ -47,8 +47,14 @@ vim.lsp.config('lua_ls', {
 
 vim.lsp.config('clangd', {
   capabilities = capabilities,
+  -- Prefer Allman-style braces with 4 space indentation when no project config exists.
+  -- clangd automatically respects project-level .clang-format files, so we only
+  -- need to adjust the fallback formatting style here.
+  cmd = {
+    "clangd",
+    "--fallback-style={BasedOnStyle: LLVM, IndentWidth: 4, BreakBeforeBraces: Allman}",
+  },
   -- example tweaks:
-  -- cmd = { "clangd", "--background-index" },
   -- filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 })
 
