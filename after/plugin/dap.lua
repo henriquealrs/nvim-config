@@ -20,4 +20,22 @@ dap.configurations.cpp = {
     },
 }
 
+dap.adapters.python = {
+    type = "executable",
+    command = vim.fn.getcwd() .. "/.venv/bin/python",
+    args = { "-m", "debugpy.adapter" },
+}
+
+dap.configurations.python = { {
+    type = "python",
+    request = "launch",
+    name = "Debug CLI",
+    module = "src/b3_investidor/b3_investidor.py",
+    args = {},
+    cwd = "${workspaceFolder}",
+    pythonPath = function()
+        return vim.fn.getcwd() .. "/.venv/bin/python"
+    end,
+}, }
+
 require("nvim-dap-virtual-text").setup()
