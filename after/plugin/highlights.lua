@@ -28,34 +28,63 @@ local function brighten(hex_color, amount)
     )
 end
 
-local function set_comment_brighter()
-    local ok, comment = pcall(vim.api.nvim_get_hl, 0, { name = "Comment", link = false })
-    if not ok or not comment.fg then
-        return
+local function get_highlight(name)
+    local ok, highlight = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
+    if not ok then
+        return nil
     end
 
-    local fg = string.format("#%06x", comment.fg)
-    local brighter = brighten(fg, 22)
-    local opts = { fg = brighter }
+    return highlight
+end
 
-    if comment.italic ~= nil then
-        opts.italic = comment.italic
-    end
-    if comment.bold ~= nil then
-        opts.bold = comment.bold
-    end
-    if comment.underline ~= nil then
-        opts.underline = comment.underline
-    end
-    if comment.strikethrough ~= nil then
-        opts.strikethrough = comment.strikethrough
+local function to_hex(color)
+    if type(color) == "number" then
+        return string.format("#%06x", color)
     end
 
-    vim.api.nvim_set_hl(0, "Comment", opts)
+    return color
+end
+
+local function copy_text_style(source, target)
+    if source.italic ~= nil then
+        target.italic = source.italic
+    end
+    if source.bold ~= nil then
+        target.bold = source.bold
+    end
+    if source.underline ~= nil then
+        target.underline = source.underline
+    end
+    if source.strikethrough ~= nil then
+        target.strikethrough = source.strikethrough
+    end
+end
+
+local function set_comment_and_git_blame_highlights()
+    local comment = get_highlight("Comment")
+    if comment and comment.fg then
+        local brighter_comment = { fg = brighten(to_hex(comment.fg), 22) }
+        copy_text_style(comment, brighter_comment)
+        brighter_comment.italic = true
+        vim.api.nvim_set_hl(0, "Comment", brighter_comment)
+    end
+
+    local git_blame = {
+        fg = "#7aa2f7",
+        italic = false,
+        nocombine = true,
+    }
+
+    local diagnostic_hint = get_highlight("DiagnosticHint")
+    if diagnostic_hint and diagnostic_hint.fg then
+        git_blame.fg = to_hex(diagnostic_hint.fg)
+    end
+
+    vim.api.nvim_set_hl(0, "GitBlameInline", git_blame)
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = set_comment_brighter,
+    callback = set_comment_and_git_blame_highlights,
 })
 
-set_comment_brighter()
+set_comment_and_git_blame_highlights()
