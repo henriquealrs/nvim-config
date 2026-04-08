@@ -5,6 +5,11 @@ require("aerial").setup({
         vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
         vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
     end,
+    backends = {
+        _ = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
+        -- Avoid Aerial's SQL treesitter query until the parser/query versions match.
+        sql = { "lsp" },
+    },
     layout = {
         -- These control the width of the aerial window.
         -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
