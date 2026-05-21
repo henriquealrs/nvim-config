@@ -1,7 +1,10 @@
 return {
     "stevearc/conform.nvim",
     opts = {
-        formatters_by_ft = { cs = { "csharpier" } },
+        formatters_by_ft = {
+            cs = { "csharpier" },
+            rust = { "rustfmt" },
+        },
         format_on_save = { timeout_ms = 2000, lsp_fallback = true },
     }
 }

@@ -28,3 +28,32 @@ vim.opt.colorcolumn = "80"
 
 vim.cmd(":highlight ExtraWhitespace ctermbg=red guibg=red")
 vim.cmd([[match ExtraWhitespace /\s\+$/]])
+
+local autoread_group = vim.api.nvim_create_augroup("AutoRead", { clear = true })
+local uv = vim.uv or vim.loop
+local last_check = 0
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+    group = autoread_group,
+    callback = function()
+        if vim.fn.mode() == "c" then
+            return
+        end
+
+        local now = uv.hrtime()
+        if now - last_check < 1000000000 then
+            return
+        end
+
+        last_check = now
+        vim.cmd("silent! checktime")
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+    group = autoread_group,
+    callback = function(args)
+        local file = args.file ~= "" and vim.fn.fnamemodify(args.file, ":~:.") or vim.fn.expand("%:~:.")
+        vim.notify("Reloaded " .. file, vim.log.levels.INFO, { title = "File changed on disk" })
+    end,
+})

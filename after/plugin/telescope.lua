@@ -1,11 +1,18 @@
 require('telescope').load_extension('fzf')
 require('telescope').setup {
+    defaults = {
+        -- Avoid stale-TSNode crashes in recycled previewer buffers on nvim 0.12
+        -- (languagetree.lua:215 -> treesitter.lua:196 "attempt to call method 'range' (a nil value)").
+        preview = {
+            treesitter = false,
+        },
+    },
     pickers = {
         find_files = {
             theme = "ivy"
         },
     },
-    extentions = { fzf = {} }
+    extensions = { fzf = {} }
 }
 
 local builtin = require('telescope.builtin')

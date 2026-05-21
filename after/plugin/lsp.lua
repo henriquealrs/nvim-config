@@ -12,15 +12,12 @@ if blink_ok and blink.get_lsp_capabilities then
 end
 capabilities.offsetEncoding = { "utf-16" }
 
+-- rust_analyzer: install the binary via Mason, but do not auto-enable (rustaceanvim
+-- is the only client that should attach — Mason would otherwise :h vim.lsp.enable it).
 require('mason-lspconfig').setup({
-  ensure_installed = { 'lua_ls', 'clangd', 'pyright' },
-  automatic_installation = true,
-  handlers = {
-    function(server)
-      vim.lsp.config(server, {
-        capabilities = capabilities,
-      })
-    end,
+  ensure_installed = { 'lua_ls', 'clangd', 'pyright', 'rust_analyzer' },
+  automatic_enable = {
+    exclude = { 'rust_analyzer' },
   },
 })
 
@@ -64,7 +61,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(event)
         vim.bo[event.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = event.buf }
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        -- rustaceanvim uses buffer-local K in after/ftplugin/rust.lua; LspAttach runs
+        -- after filetype and would otherwise replace that mapping.
+        if vim.bo[event.buf].filetype ~= 'rust' then
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        end
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)

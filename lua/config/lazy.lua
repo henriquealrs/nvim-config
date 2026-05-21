@@ -55,6 +55,7 @@ require("lazy").setup({
         {
             "Badhi/nvim-treesitter-cpp-tools",
             dependencies = { "nvim-treesitter/nvim-treesitter" },
+            ft = { "cpp" },
             cond = function()
                 return pcall(require, "nvim-treesitter.ts_utils")
             end,
@@ -148,7 +149,7 @@ require("lazy").setup({
                 end
 
                 configs.setup({
-                    ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
+                    ensure_installed = { "c", "cpp", "lua", "rust", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
                     sync_install = false,
                     highlight = { enable = true },
                     indent = { enable = true },
