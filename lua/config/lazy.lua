@@ -56,6 +56,20 @@ require("lazy").setup({
             "Badhi/nvim-treesitter-cpp-tools",
             dependencies = { "nvim-treesitter/nvim-treesitter" },
             ft = { "cpp" },
+            init = function()
+                local ok, ts_query = pcall(require, "vim.treesitter.query")
+                if not ok then
+                    return
+                end
+
+                if ts_query.get and not ts_query.get_query then
+                    ts_query.get_query = ts_query.get
+                end
+
+                if vim.treesitter.query and vim.treesitter.query.get and not vim.treesitter.get_query then
+                    vim.treesitter.get_query = vim.treesitter.query.get
+                end
+            end,
             cond = function()
                 return pcall(require, "nvim-treesitter.ts_utils")
             end,

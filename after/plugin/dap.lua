@@ -87,8 +87,14 @@ dap.configurations.cpp = {
 require("nvim-dap-virtual-text").setup()
 
 local vscode = require("dap.ext.vscode")
-vscode.type_to_filetypes["lldb"] = { "rust", "cpp" }   -- if not set elsewhere
-vscode.load_launchjs(
-    vim.fn.getcwd() .. "/.vscode/nvim-launch.json",
-    { lldb = { "rust" } }
-)
+
+-- Keep the custom Neovim launch file without using deprecated load_launchjs().
+dap.providers.configs["nvim-launch.json"] = function()
+    local ok, configs = pcall(vscode.getconfigs, vim.fn.getcwd() .. "/.vscode/nvim-launch.json")
+    if not ok then
+        vim.notify_once("Could not get configurations from nvim-launch.json:\n" .. configs, vim.log.levels.WARN, { title = "DAP" })
+        return {}
+    end
+
+    return configs
+end
