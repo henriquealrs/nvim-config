@@ -171,6 +171,43 @@ require("lazy").setup({
                         disable = { "c", "cpp" },
                     },
                 })
+
+                -- nvim-treesitter commit cf12346a assumes directive captures are TSNodes.
+                -- Neovim 0.12 returns capture lists, which breaks markdown fenced-code injections.
+                local query_ok, query = pcall(require, "vim.treesitter.query")
+                if query_ok then
+                    local aliases = {
+                        ex = "elixir",
+                        pl = "perl",
+                        sh = "bash",
+                        ts = "typescript",
+                        uxn = "uxntal",
+                    }
+
+                    local function get_node(match, capture_id)
+                        local node = match[capture_id]
+                        if type(node) == "table" then
+                            node = node[1]
+                        end
+                        return node
+                    end
+
+                    local function parser_from_info_string(info_string)
+                        return vim.filetype.match({ filename = "a." .. info_string })
+                            or aliases[info_string]
+                            or info_string
+                    end
+
+                    query.add_directive("set-lang-from-info-string!", function(match, _, bufnr, pred, metadata)
+                        local node = get_node(match, pred[2])
+                        if not node then
+                            return
+                        end
+
+                        local info_string = vim.treesitter.get_node_text(node, bufnr):lower()
+                        metadata["injection.language"] = parser_from_info_string(info_string)
+                    end, { force = true, all = false })
+                end
             end
         },
         -- {
