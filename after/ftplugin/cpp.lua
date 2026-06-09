@@ -1,3 +1,10 @@
+vim.bo.cindent = true
+vim.bo.smartindent = false
+vim.bo.indentexpr = ""
+vim.bo.shiftwidth = 4
+vim.bo.tabstop = 4
+vim.bo.expandtab = true
+
 -- Same <leader> as rust (RustLsp codeAction) → pick a nvim-treesitter-cpp-tools command
 local function pick_tscpp()
     pcall(function()

@@ -1,5 +1,5 @@
 require("config")
 require("config.lazy")
 
-vim.cmd.colorscheme("rose-pine-moon")
+vim.cmd.colorscheme("catppuccin-frappe")
 vim.g.netrw_bufsettings = 'noma nomod nu rnu nobl nowrap ro'
