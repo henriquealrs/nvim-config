@@ -49,21 +49,33 @@ local function resolve_lldb_adapter_cmd()
         end
     end
 
-    vim.notify(
-        "lldb DAP not found (lldb-vscode / lldb-dap). "
-        .. "Install `lldb` from your distro, or set NVIM_DAP_LLDB to the full path.",
-        vim.log.levels.ERROR
-    )
     return nil
 end
 
-local lldb_cmd = resolve_lldb_adapter_cmd()
+local function notify_lldb_missing()
+    vim.schedule(function()
+        vim.notify_once(
+            "lldb DAP not found (lldb-vscode / lldb-dap). "
+            .. "Install `lldb` from your distro, or set NVIM_DAP_LLDB to the full path.",
+            vim.log.levels.WARN,
+            { title = "DAP" }
+        )
+    end)
+end
 
-dap.adapters.lldb = lldb_cmd and {
-    type = "executable",
-    command = lldb_cmd,
-    name = "lldb",
-} or nil
+dap.adapters.lldb = function(callback)
+    local lldb_cmd = resolve_lldb_adapter_cmd()
+    if not lldb_cmd then
+        notify_lldb_missing()
+        return
+    end
+
+    callback({
+        type = "executable",
+        command = lldb_cmd,
+        name = "lldb",
+    })
+end
 
 dap.adapters.gdb = {
     type = "executable",
