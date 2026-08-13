@@ -163,7 +163,22 @@ require("lazy").setup({
                 end
 
                 configs.setup({
-                    ensure_installed = { "c", "cpp", "lua", "rust", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
+                    ensure_installed = {
+                        "c",
+                        "cpp",
+                        "elixir",
+                        "heex",
+                        "html",
+                        "javascript",
+                        "latex",
+                        "lua",
+                        "markdown",
+                        "markdown_inline",
+                        "query",
+                        "rust",
+                        "vim",
+                        "vimdoc",
+                    },
                     sync_install = false,
                     highlight = { enable = true },
                     indent = {
