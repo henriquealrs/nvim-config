@@ -1,3 +1,6 @@
+local render_markdown_venv = vim.fn.stdpath("data") .. "/render-markdown-venv"
+local render_markdown_bin = render_markdown_venv .. (vim.fn.has("win32") ~= 0 and "/Scripts" or "/bin")
+
 return {
     "yetone/avante.nvim",
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -68,10 +71,27 @@ return {
         {
             -- Make sure to set this up properly if you have lazy=true
             'MeanderingProgrammer/render-markdown.nvim',
+            build = function()
+                local python = render_markdown_bin .. (vim.fn.has("win32") ~= 0 and "/python.exe" or "/python")
+
+                local function run(command)
+                    local result = vim.system(command, { text = true }):wait()
+                    if result.code ~= 0 then
+                        error(result.stderr or result.stdout or "command failed")
+                    end
+                end
+
+                if vim.fn.executable(python) == 0 then
+                    run({ "python3", "-m", "venv", render_markdown_venv })
+                end
+                run({ python, "-m", "pip", "install", "--disable-pip-version-check", "pylatexenc" })
+            end,
             opts = {
                 file_types = { "markdown", "Avante" },
                 latex = {
                     enabled = true,
+                    converter = render_markdown_bin
+                        .. (vim.fn.has("win32") ~= 0 and "/latex2text.exe" or "/latex2text"),
                     inline = true,
                     block = true,
                 },
