@@ -1,3 +1,22 @@
+local function ipybridge_terminal_sources()
+    local ipybridge = package.loaded["ipybridge"]
+    local term = ipybridge and ipybridge.term_instance
+    if not term or term.buf_id ~= vim.api.nvim_get_current_buf() then
+        return {}
+    end
+
+    -- ipybridge adds its provider at runtime. Do not return its ID until that
+    -- registration has completed, otherwise blink asserts on TextChangedT.
+    local blink_config = package.loaded["blink.cmp.config"]
+    local sources = blink_config and blink_config.sources
+    local providers = sources and sources.providers
+    if not providers or not providers.ipybridge_debug_hint then
+        return {}
+    end
+
+    return { "ipybridge_debug_hint" }
+end
+
 return {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
@@ -39,6 +58,12 @@ return {
 
         -- (Default) Only show the documentation popup when manually triggered
         completion = { documentation = { auto_show = false } },
+
+        -- ipybridge registers this provider for completion while stopped in ipdb.
+        term = {
+            enabled = true,
+            sources = ipybridge_terminal_sources,
+        },
 
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`

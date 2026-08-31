@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo "ipybridge: uv is not available in PATH" >&2
+    exit 127
+fi
+
+if [ -n "${IPYBRIDGE_UV_PROJECT_ROOT:-}" ]; then
+    exec uv run \
+        --project "$IPYBRIDGE_UV_PROJECT_ROOT" \
+        --with ipykernel \
+        --with ipython \
+        --with ipython-pygments-lexers \
+        --with jupyter-client \
+        --with jupyter-console \
+        --with pyzmq \
+        python "$@"
+fi
+
+exec uv run \
+    --with ipykernel \
+    --with ipython \
+    --with ipython-pygments-lexers \
+    --with jupyter-client \
+    --with jupyter-console \
+    --with pyzmq \
+    python "$@"
